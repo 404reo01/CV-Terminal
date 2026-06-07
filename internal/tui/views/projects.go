@@ -66,7 +66,11 @@ func buildProjectsContent(r *lipgloss.Renderer, width int) string {
 		sb.WriteString("\n")
 
 		if p.Link != "" {
-			sb.WriteString(AccentStyle(r).Render("→ " + p.Link))
+			sb.WriteString(AccentStyle(r).Render("⌥ " + p.Link))
+			sb.WriteString("\n")
+		}
+		if p.Live != "" {
+			sb.WriteString(AccentStyle(r).Render("◈ " + p.Live))
 			sb.WriteString("\n")
 		}
 
