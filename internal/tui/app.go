@@ -13,10 +13,14 @@ type tickMsg time.Time
 
 const (
 	screenHome = iota
+	screenExperiences
 	screenProjects
 	screenSkills
 	screenContact
 )
+
+// Écran ouvert par chaque entrée du menu (même ordre que menuItems dans views/home.go)
+var menuScreens = []int{screenExperiences, screenProjects, screenSkills, screenContact}
 
 type Model struct {
 	currentScreen int
@@ -92,7 +96,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.currentScreen == screenHome {
 				m.menuIndex--
 				if m.menuIndex < 0 {
-					m.menuIndex = 2
+					m.menuIndex = len(menuScreens) - 1
 				}
 			} else {
 				offset := m.scrollOffsets[m.currentScreen]
@@ -103,23 +107,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case "down", "j":
 			if m.currentScreen == screenHome {
-				m.menuIndex = (m.menuIndex + 1) % 3
+				m.menuIndex = (m.menuIndex + 1) % len(menuScreens)
 			} else {
 				m.scrollOffsets[m.currentScreen]++
 			}
 
 		case "enter", " ":
 			if m.currentScreen == screenHome {
-				switch m.menuIndex {
-				case 0:
-					m.currentScreen = screenProjects
-					m.scrollOffsets[screenProjects] = 0
-				case 1:
-					m.currentScreen = screenSkills
-					m.scrollOffsets[screenSkills] = 0
-				case 2:
-					m.currentScreen = screenContact
-				}
+				m.currentScreen = menuScreens[m.menuIndex]
+				m.scrollOffsets[m.currentScreen] = 0
 			}
 		}
 	}
@@ -138,6 +134,8 @@ func (m Model) View() string {
 	switch m.currentScreen {
 	case screenHome:
 		overlay = views.RenderHome(m.renderer, m.width, m.height, m.menuIndex)
+	case screenExperiences:
+		overlay = views.RenderExperiences(m.renderer, m.width, m.height, m.scrollOffsets[screenExperiences])
 	case screenProjects:
 		overlay = views.RenderProjects(m.renderer, m.width, m.height, m.scrollOffsets[screenProjects])
 	case screenSkills:

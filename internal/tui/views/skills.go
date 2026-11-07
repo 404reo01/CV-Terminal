@@ -15,18 +15,7 @@ func RenderSkills(r *lipgloss.Renderer, width, height, scrollOffset int) string 
 	maxScroll := MaxScroll(content, height-4)
 	scrolled := ApplyScroll(content, height-4, scrollOffset)
 
-	scrollHint := ""
-	if maxScroll > 0 {
-		if scrollOffset < maxScroll {
-			scrollHint = HelpStyle(r).Render("▼ suite")
-		}
-		if scrollOffset > 0 {
-			scrollHint = HelpStyle(r).Render("▲ haut  ▼ suite")
-			if scrollOffset >= maxScroll {
-				scrollHint = HelpStyle(r).Render("▲ haut")
-			}
-		}
-	}
+	scrollHint := ScrollHint(r, scrollOffset, maxScroll)
 
 	help := HelpStyle(r).Render("↑/k  ↓/j  défiler   esc  retour")
 	footer := lipgloss.JoinHorizontal(lipgloss.Left, help, "   ", scrollHint)

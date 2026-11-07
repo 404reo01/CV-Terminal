@@ -1,12 +1,21 @@
 package data
 
 type ResumeData struct {
-	Name     string
-	Title    string
-	About    string
-	Skills   []SkillCategory
-	Projects []Project
-	Contact  []ContactItem
+	Name        string
+	Title       string
+	About       string
+	Experiences []Experience
+	Skills      []SkillCategory
+	Projects    []Project
+	Contact     []ContactItem
+}
+
+type Experience struct {
+	Company     string
+	Role        string
+	Period      string
+	Description string
+	Tech        []string
 }
 
 type SkillCategory struct {
@@ -30,13 +39,39 @@ type ContactItem struct {
 
 var Resume = ResumeData{
 	Name:  "Rayan EL OUAZZANI",
-	Title: "Étudiant · Développeur Full-Stack",
-	About: "Admis en MSc Cloud & Mobile · BUT Informatique Sorbonne Paris Nord.\nJe construis des apps full-stack déployées — de la comm WebRTC\nà la simulation de données scientifiques. Président de BDE,\nélu au conseil d'institut. En recherche d'alternance.",
+	Title: "DevOps & Software Engineer",
+	About: "Alternant Software Engineer chez Ransau Système (2026-2028),\nen MSc Développement Web, Mobile & Cloud à SUPINFO.\nJe construis et je déploie : apps full-stack, infra Kubernetes,\nintégration d'IA.",
+
+	Experiences: []Experience{
+		{
+			Company: "Ransau Système",
+			Role:    "Software Engineer · Full Stack, Cloud & IA",
+			Period:  "Stage → Alternance · 2026-2028",
+			Description: "Développement full stack d'un SaaS. Conception et gestion de\n" +
+				"l'infrastructure cloud : Kubernetes et Helm sur OVHcloud,\n" +
+				"déploiement des serveurs de production, pipelines CI/CD GitLab.\n" +
+				"Intégration de fonctionnalités IA et missions clients :\n" +
+				"intégration IA, automatisation, développement sur mesure.",
+			Tech: []string{"Next.js", "NestJS", "PostgreSQL", "Kubernetes", "Helm", "GitLab CI"},
+		},
+		{
+			Company: "e-petitpas",
+			Role:    "Développeur Full Stack",
+			Period:  "Stage · 2025 · 2 mois",
+			Description: "Messagerie instantanée temps réel, système de facturation\n" +
+				"automatique et module de gestion de devis.",
+			Tech: []string{"React", "Node.js", "WebSocket"},
+		},
+	},
 
 	Skills: []SkillCategory{
 		{
 			Category: "Cloud & DevOps",
-			Items:    []string{"Docker", "VPS", "Go", "SSH", "Linux", "Kubernetes"},
+			Items:    []string{"Kubernetes", "Helm", "Docker", "GitLab CI", "OVHcloud", "Linux", "VPS", "SSH", "Go"},
+		},
+		{
+			Category: "IA",
+			Items:    []string{"Intégration LLM", "IA agentique", "Claude Code", "AI Endpoints"},
 		},
 		{
 			Category: "Mobile",
@@ -55,8 +90,8 @@ var Resume = ResumeData{
 			Items:    []string{"PostgreSQL", "MySQL", "SQLite", "Supabase"},
 		},
 		{
-			Category: "Data & IA",
-			Items:    []string{"Python", "Pandas", "Scikit-learn", "API Integration"},
+			Category: "Data",
+			Items:    []string{"Python", "Pandas", "Scikit-learn"},
 		},
 		{
 			Category: "Langues",
@@ -65,6 +100,15 @@ var Resume = ResumeData{
 	},
 
 	Projects: []Project{
+		{
+			Name: "Mappa",
+			Description: "Une commande Claude Code qui transforme un mémo vocal en vidéo\n" +
+				"verticale animée (TikTok, Reels, LinkedIn). L'IA découpe en plans,\n" +
+				"illustre, sous-titre et met en musique ; un relecteur IA\n" +
+				"indépendant contrôle le résultat, l'utilisateur valide chaque étape.",
+			Tech: []string{"TypeScript", "Remotion", "Claude Code", "ElevenLabs", "FFmpeg"},
+			Link: "github.com/404reo01/Video-generator-command",
+		},
 		{
 			Name: "Reo Le Scribe",
 			Description: "Plateforme de communication temps réel pour équipes (max 10).\n" +
@@ -91,12 +135,10 @@ var Resume = ResumeData{
 			Link: "github.com/404reo01/CV-Terminal",
 		},
 		{
-			Name: "TrackStar App",
-			Description: "Application mobile de recommandation musicale.\n" +
-				"Système de clustering et espaces vectoriels pour\n" +
-				"la découverte personnalisée.",
-			Tech: []string{"React Native", "Python", "Scikit-learn", "SQLite"},
-			Link: "github.com/YannMKD/sae-but3-eco-mobile",
+			Name:        "TrackStar App",
+			Description: "Application mobile de recommandation musicale.",
+			Tech:        []string{"React Native", "API Spotify"},
+			Link:        "github.com/YannMKD/sae-but3-eco-mobile",
 		},
 	},
 
@@ -105,6 +147,5 @@ var Resume = ResumeData{
 		{Label: "Portfolio", Icon: "◈", Value: "portfolio-rayan-elouazzani.netlify.app"},
 		{Label: "LinkedIn", Icon: "in", Value: "linkedin.com/in/rayan-el-ouazzani"},
 		{Label: "GitHub", Icon: "⌥", Value: "github.com/404reo01"},
-		{Label: "Tél", Icon: "☎", Value: "07 83 61 26 48"},
 	},
 }

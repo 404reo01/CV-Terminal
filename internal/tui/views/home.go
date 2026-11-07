@@ -9,17 +9,13 @@ import (
 	"github.com/rayan/cv-terminal/internal/data"
 )
 
+// Même ordre que menuScreens dans tui/app.go
 var menuItems = []string{
+	"  Expériences  ",
 	"  Projets  ",
 	"  Compétences  ",
 	"  Contact  ",
 }
-
-const (
-	ViewProjects = iota
-	ViewSkills
-	ViewContact
-)
 
 func RenderHome(r *lipgloss.Renderer, width, height, selected int) string {
 	// En-tête avec renard
