@@ -8,32 +8,14 @@ import (
 )
 
 func RenderSkills(r *lipgloss.Renderer, width, height, scrollOffset int) string {
-	content := buildSkillsContent(r, width)
-	title := TitleStyle(r).Render("◈ Compétences")
-	sep := SeparatorStyle(r).Render(Separator(minS(width-4, 60)))
-
-	maxScroll := MaxScroll(content, height-4)
-	scrolled := ApplyScroll(content, height-4, scrollOffset)
-
-	scrollHint := ScrollHint(r, scrollOffset, maxScroll)
-
-	help := HelpStyle(r).Render("↑/k  ↓/j  défiler   esc  retour")
-	footer := lipgloss.JoinHorizontal(lipgloss.Left, help, "   ", scrollHint)
-
-	page := lipgloss.JoinVertical(lipgloss.Left,
-		title,
-		sep,
-		"",
-		scrolled,
-		"",
-		footer,
-	)
-
-	box := r.NewStyle().Padding(1, 2).Render(page)
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
+	return renderScrollPage(r, width, height, "◈ Compétences", buildSkillsContent(r), scrollOffset)
 }
 
-func buildSkillsContent(r *lipgloss.Renderer, width int) string {
+func MaxScrollSkills(r *lipgloss.Renderer, height int) int {
+	return MaxScroll(buildSkillsContent(r), VisibleLines(height))
+}
+
+func buildSkillsContent(r *lipgloss.Renderer) string {
 	var sb strings.Builder
 	for _, cat := range data.Resume.Skills {
 		sb.WriteString(SubtitleStyle(r).Bold(true).Render("▸ " + cat.Category))
@@ -44,17 +26,8 @@ func buildSkillsContent(r *lipgloss.Renderer, width int) string {
 			tags = append(tags, TagStyle(r).Render(item))
 		}
 
-		// wrap les tags si trop larges
-		line := "  " + strings.Join(tags, " ")
-		sb.WriteString(line)
+		sb.WriteString("  " + strings.Join(tags, " "))
 		sb.WriteString("\n\n")
 	}
 	return strings.TrimRight(sb.String(), "\n")
-}
-
-func minS(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

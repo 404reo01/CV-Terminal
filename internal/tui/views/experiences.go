@@ -8,28 +8,11 @@ import (
 )
 
 func RenderExperiences(r *lipgloss.Renderer, width, height, scrollOffset int) string {
-	content := buildExperiencesContent(r, width)
-	title := TitleStyle(r).Render("◈ Expériences")
-	sep := SeparatorStyle(r).Render(Separator(min(width-4, 60)))
+	return renderScrollPage(r, width, height, "◈ Expériences", buildExperiencesContent(r, width), scrollOffset)
+}
 
-	maxScroll := MaxScroll(content, height-4)
-	scrolled := ApplyScroll(content, height-4, scrollOffset)
-	scrollHint := ScrollHint(r, scrollOffset, maxScroll)
-
-	help := HelpStyle(r).Render("↑/k  ↓/j  défiler   esc  retour")
-	footer := lipgloss.JoinHorizontal(lipgloss.Left, help, "   ", scrollHint)
-
-	page := lipgloss.JoinVertical(lipgloss.Left,
-		title,
-		sep,
-		"",
-		scrolled,
-		"",
-		footer,
-	)
-
-	box := r.NewStyle().Padding(1, 2).Render(page)
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
+func MaxScrollExperiences(r *lipgloss.Renderer, width, height int) int {
+	return MaxScroll(buildExperiencesContent(r, width), VisibleLines(height))
 }
 
 func buildExperiencesContent(r *lipgloss.Renderer, width int) string {

@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
@@ -9,30 +8,11 @@ import (
 )
 
 func RenderProjects(r *lipgloss.Renderer, width, height, scrollOffset int) string {
-	content := buildProjectsContent(r, width)
-	title := TitleStyle(r).Render("◈ Projets")
-	sep := SeparatorStyle(r).Render(Separator(min(width-4, 60)))
+	return renderScrollPage(r, width, height, "◈ Projets", buildProjectsContent(r, width), scrollOffset)
+}
 
-	maxScroll := MaxScroll(content, height-4)
-	scrolled := ApplyScroll(content, height-4, scrollOffset)
-
-	scrollHint := ScrollHint(r, scrollOffset, maxScroll)
-
-	help := HelpStyle(r).Render("↑/k  ↓/j  défiler   esc  retour")
-	footer := lipgloss.JoinHorizontal(lipgloss.Left, help, "   ", scrollHint)
-
-	page := lipgloss.JoinVertical(lipgloss.Left,
-		title,
-		sep,
-		"",
-		scrolled,
-		"",
-		footer,
-	)
-
-	_ = fmt.Sprintf
-	box := r.NewStyle().Padding(1, 2).Render(page)
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
+func MaxScrollProjects(r *lipgloss.Renderer, width, height int) int {
+	return MaxScroll(buildProjectsContent(r, width), VisibleLines(height))
 }
 
 func buildProjectsContent(r *lipgloss.Renderer, width int) string {
@@ -67,21 +47,4 @@ func buildProjectsContent(r *lipgloss.Renderer, width int) string {
 		sb.WriteString("\n")
 	}
 	return sb.String()
-}
-
-func MaxScrollProjects(height int) int {
-	// approximation basée sur ~6 lignes par projet
-	totalLines := len(data.Resume.Projects) * 6
-	max := totalLines - (height - 4)
-	if max < 0 {
-		return 0
-	}
-	return max
-}
-
-func min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

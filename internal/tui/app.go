@@ -70,6 +70,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width = msg.Width
 		m.height = msg.Height
 		m.snow.Init(msg.Width, msg.Height)
+		// Le contenu visible change avec la taille : on recadre les positions de défilement
+		for screen, offset := range m.scrollOffsets {
+			m.scrollOffsets[screen] = min(offset, m.maxScroll(screen))
+		}
 		return m, nil
 
 	case tickMsg:
@@ -108,7 +112,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "down", "j":
 			if m.currentScreen == screenHome {
 				m.menuIndex = (m.menuIndex + 1) % len(menuScreens)
-			} else {
+			} else if m.scrollOffsets[m.currentScreen] < m.maxScroll(m.currentScreen) {
 				m.scrollOffsets[m.currentScreen]++
 			}
 
@@ -123,12 +127,24 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+// maxScroll : dernière position de défilement utile pour un écran (0 si tout tient).
+func (m Model) maxScroll(screen int) int {
+	switch screen {
+	case screenExperiences:
+		return views.MaxScrollExperiences(m.renderer, m.width, m.height)
+	case screenProjects:
+		return views.MaxScrollProjects(m.renderer, m.width, m.height)
+	case screenSkills:
+		return views.MaxScrollSkills(m.renderer, m.height)
+	default:
+		return 0
+	}
+}
+
 func (m Model) View() string {
 	if m.width == 0 {
 		return ""
 	}
-
-	bg := m.snow.Render()
 
 	var overlay string
 	switch m.currentScreen {
@@ -144,7 +160,6 @@ func (m Model) View() string {
 		overlay = views.RenderContact(m.renderer, m.width, m.height)
 	}
 
-	_ = bg
 	return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center,
 		overlay,
 		lipgloss.WithWhitespaceChars(" "),

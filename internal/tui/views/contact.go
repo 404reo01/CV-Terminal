@@ -9,7 +9,7 @@ import (
 
 func RenderContact(r *lipgloss.Renderer, width, height int) string {
 	title := TitleStyle(r).Render("◈ Contact")
-	sep := SeparatorStyle(r).Render(Separator(minC(width-4, 60)))
+	sep := SeparatorStyle(r).Render(Separator(min(width-4, 60)))
 
 	var sb strings.Builder
 	for _, c := range data.Resume.Contact {
@@ -32,11 +32,4 @@ func RenderContact(r *lipgloss.Renderer, width, height int) string {
 
 	box := r.NewStyle().Padding(1, 3).Render(page)
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
-}
-
-func minC(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
 }

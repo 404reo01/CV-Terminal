@@ -104,10 +104,3 @@ func (s *Snow) Render() string {
 	}
 	return strings.Join(rows, "\n")
 }
-
-func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}

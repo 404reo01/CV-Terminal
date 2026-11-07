@@ -6,18 +6,18 @@ import (
 
 // Palette forêt-neige
 const (
-	ColorForestDeep   = lipgloss.Color("#0d1f0f") // fond sombre forêt
-	ColorForestMid    = lipgloss.Color("#1a3320") // vert forêt moyen
-	ColorMoss         = lipgloss.Color("#4a7c59") // vert mousse
-	ColorLeaf         = lipgloss.Color("#6db87a") // vert feuille clair
-	ColorSnowWhite    = lipgloss.Color("#f0f4f0") // blanc neige
-	ColorSnowDim      = lipgloss.Color("#b0bdb0") // neige grisée
-	ColorBark         = lipgloss.Color("#8b6340") // marron écorce
-	ColorBarkLight    = lipgloss.Color("#c49a6c") // marron clair
-	ColorFoxOrange    = lipgloss.Color("#e07b39") // orange renard
-	ColorFoxLight     = lipgloss.Color("#f0a060") // orange clair renard
-	ColorIce          = lipgloss.Color("#c8e6e6") // bleu glace
-	ColorNight        = lipgloss.Color("#0a1510") // noir nuit forêt
+	ColorForestDeep = lipgloss.Color("#0d1f0f") // fond sombre forêt
+	ColorForestMid  = lipgloss.Color("#1a3320") // vert forêt moyen
+	ColorMoss       = lipgloss.Color("#4a7c59") // vert mousse
+	ColorLeaf       = lipgloss.Color("#6db87a") // vert feuille clair
+	ColorSnowWhite  = lipgloss.Color("#f0f4f0") // blanc neige
+	ColorSnowDim    = lipgloss.Color("#b0bdb0") // neige grisée
+	ColorBark       = lipgloss.Color("#8b6340") // marron écorce
+	ColorBarkLight  = lipgloss.Color("#c49a6c") // marron clair
+	ColorFoxOrange  = lipgloss.Color("#e07b39") // orange renard
+	ColorFoxLight   = lipgloss.Color("#f0a060") // orange clair renard
+	ColorIce        = lipgloss.Color("#c8e6e6") // bleu glace
+	ColorNight      = lipgloss.Color("#0a1510") // noir nuit forêt
 )
 
 func newStyle(r *lipgloss.Renderer) lipgloss.Style {

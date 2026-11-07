@@ -6,6 +6,15 @@ import (
 	"github.com/charmbracelet/lipgloss"
 )
 
+// Lignes occupées autour du contenu d'une page défilante :
+// padding haut/bas (2) + titre + séparateur + ligne vide + ligne vide + pied de page.
+const pageChrome = 7
+
+// VisibleLines : nombre de lignes de contenu qui tiennent dans le terminal.
+func VisibleLines(height int) int {
+	return max(height-pageChrome, 1)
+}
+
 func ApplyScroll(content string, height, offset int) string {
 	lines := strings.Split(content, "\n")
 	total := len(lines)
@@ -46,4 +55,26 @@ func ScrollHint(r *lipgloss.Renderer, offset, maxScroll int) string {
 	default:
 		return HelpStyle(r).Render("▲ haut  ▼ suite")
 	}
+}
+
+// renderScrollPage : mise en page commune des écrans défilants (titre, séparateur, contenu, aide).
+func renderScrollPage(r *lipgloss.Renderer, width, height int, title, content string, offset int) string {
+	visible := VisibleLines(height)
+	maxScroll := MaxScroll(content, visible)
+	offset = min(offset, maxScroll)
+
+	help := HelpStyle(r).Render("↑/k  ↓/j  défiler   esc  retour")
+	footer := lipgloss.JoinHorizontal(lipgloss.Left, help, "   ", ScrollHint(r, offset, maxScroll))
+
+	page := lipgloss.JoinVertical(lipgloss.Left,
+		TitleStyle(r).Render(title),
+		SeparatorStyle(r).Render(Separator(min(width-4, 60))),
+		"",
+		ApplyScroll(content, visible, offset),
+		"",
+		footer,
+	)
+
+	box := r.NewStyle().Padding(1, 2).Render(page)
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
 }

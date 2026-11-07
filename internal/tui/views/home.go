@@ -1,7 +1,6 @@
 package views
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
@@ -18,7 +17,6 @@ var menuItems = []string{
 }
 
 func RenderHome(r *lipgloss.Renderer, width, height, selected int) string {
-	// En-tête avec renard
 	fox := AccentStyle(r).Render(ascii.Fox)
 
 	name := r.NewStyle().
@@ -27,8 +25,7 @@ func RenderHome(r *lipgloss.Renderer, width, height, selected int) string {
 		Render(data.Resume.Name)
 
 	title := SubtitleStyle(r).Render(data.Resume.Title)
-
-	header := lipgloss.JoinVertical(lipgloss.Center, fox, "", name, title)
+	about := DimStyle(r).Align(lipgloss.Center).Render(data.Resume.About)
 
 	// Menu
 	menuLines := []string{}
@@ -61,14 +58,19 @@ func RenderHome(r *lipgloss.Renderer, width, height, selected int) string {
 
 	help := HelpStyle(r).Render("↑/k  ↓/j  naviguer   enter  sélectionner   q  quitter")
 
-	content := lipgloss.JoinVertical(lipgloss.Center,
-		header,
-		"",
-		menu,
-		"",
-		help,
-	)
+	// Du plus complet au plus compact : on garde la première version qui tient dans le terminal
+	layouts := [][]string{
+		{fox, "", name, title, "", about, "", menu, "", help},
+		{fox, "", name, title, "", menu, "", help},
+		{name, title, "", menu, "", help},
+	}
+	var content string
+	for _, parts := range layouts {
+		content = lipgloss.JoinVertical(lipgloss.Center, parts...)
+		if lipgloss.Height(content) <= height {
+			break
+		}
+	}
 
-	_ = fmt.Sprintf // évite import inutilisé
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, content)
 }
