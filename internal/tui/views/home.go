@@ -16,7 +16,7 @@ var menuItems = []string{
 	"  Contact  ",
 }
 
-func RenderHome(r *lipgloss.Renderer, width, height, selected int) string {
+func RenderHome(r *lipgloss.Renderer, height, selected int) string {
 	fox := AccentStyle(r).Render(ascii.Fox)
 
 	name := r.NewStyle().
@@ -71,6 +71,5 @@ func RenderHome(r *lipgloss.Renderer, width, height, selected int) string {
 			break
 		}
 	}
-
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, content)
+	return content
 }

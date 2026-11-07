@@ -74,12 +74,38 @@ func (s *Snow) Update(width, height int) {
 	}
 }
 
-func (s *Snow) Render() string {
-	if s.width == 0 || s.height == 0 {
-		return ""
+// RenderAround : neige plein écran avec le panneau centré par-dessus.
+// La neige tombe autour du panneau, jamais sur son texte.
+func (s *Snow) RenderAround(panel string) string {
+	lines := strings.Split(panel, "\n")
+	panelWidth := lipgloss.Width(panel)
+	panelHeight := len(lines)
+
+	// Panneau plus grand que le terminal : pas de place pour la neige
+	if panelWidth > s.width || panelHeight > s.height {
+		return lipgloss.Place(s.width, s.height, lipgloss.Center, lipgloss.Center, panel)
 	}
 
-	// grille de strings (une cellule = un rune)
+	// Même centrage que lipgloss.Place
+	x0 := (s.width - panelWidth) / 2
+	y0 := (s.height - panelHeight) / 2
+
+	grid := s.cells()
+	rows := make([]string, s.height)
+	for y, row := range grid {
+		if y < y0 || y >= y0+panelHeight {
+			rows[y] = strings.Join(row, "")
+			continue
+		}
+		line := lines[y-y0]
+		line += strings.Repeat(" ", panelWidth-lipgloss.Width(line))
+		rows[y] = strings.Join(row[:x0], "") + line + strings.Join(row[x0+panelWidth:], "")
+	}
+	return strings.Join(rows, "\n")
+}
+
+// cells : grille de l'écran, une cellule = un caractère (flocon stylé ou espace).
+func (s *Snow) cells() [][]string {
 	grid := make([][]string, s.height)
 	for y := range grid {
 		grid[y] = make([]string, s.width)
@@ -97,10 +123,5 @@ func (s *Snow) Render() string {
 			grid[f.y][f.x] = s.renderer.NewStyle().Foreground(color).Render(symbol)
 		}
 	}
-
-	rows := make([]string, s.height)
-	for y, row := range grid {
-		rows[y] = strings.Join(row, "")
-	}
-	return strings.Join(rows, "\n")
+	return grid
 }

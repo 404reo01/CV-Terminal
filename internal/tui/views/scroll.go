@@ -57,7 +57,7 @@ func ScrollHint(r *lipgloss.Renderer, offset, maxScroll int) string {
 	}
 }
 
-// renderScrollPage : mise en page commune des écrans défilants (titre, séparateur, contenu, aide).
+// renderScrollPage : panneau commun des écrans défilants (titre, séparateur, contenu, aide).
 func renderScrollPage(r *lipgloss.Renderer, width, height int, title, content string, offset int) string {
 	visible := VisibleLines(height)
 	maxScroll := MaxScroll(content, visible)
@@ -75,6 +75,5 @@ func renderScrollPage(r *lipgloss.Renderer, width, height int, title, content st
 		footer,
 	)
 
-	box := r.NewStyle().Padding(1, 2).Render(page)
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
+	return r.NewStyle().Padding(1, 2).Render(page)
 }

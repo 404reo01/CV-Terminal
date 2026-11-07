@@ -146,23 +146,19 @@ func (m Model) View() string {
 		return ""
 	}
 
-	var overlay string
+	var panel string
 	switch m.currentScreen {
 	case screenHome:
-		overlay = views.RenderHome(m.renderer, m.width, m.height, m.menuIndex)
+		panel = views.RenderHome(m.renderer, m.height, m.menuIndex)
 	case screenExperiences:
-		overlay = views.RenderExperiences(m.renderer, m.width, m.height, m.scrollOffsets[screenExperiences])
+		panel = views.RenderExperiences(m.renderer, m.width, m.height, m.scrollOffsets[screenExperiences])
 	case screenProjects:
-		overlay = views.RenderProjects(m.renderer, m.width, m.height, m.scrollOffsets[screenProjects])
+		panel = views.RenderProjects(m.renderer, m.width, m.height, m.scrollOffsets[screenProjects])
 	case screenSkills:
-		overlay = views.RenderSkills(m.renderer, m.width, m.height, m.scrollOffsets[screenSkills])
+		panel = views.RenderSkills(m.renderer, m.width, m.height, m.scrollOffsets[screenSkills])
 	case screenContact:
-		overlay = views.RenderContact(m.renderer, m.width, m.height)
+		panel = views.RenderContact(m.renderer, m.width)
 	}
 
-	return lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center,
-		overlay,
-		lipgloss.WithWhitespaceChars(" "),
-		lipgloss.WithWhitespaceForeground(views.ColorForestDeep),
-	)
+	return m.snow.RenderAround(panel)
 }

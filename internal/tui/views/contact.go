@@ -7,7 +7,7 @@ import (
 	"github.com/rayan/cv-terminal/internal/data"
 )
 
-func RenderContact(r *lipgloss.Renderer, width, height int) string {
+func RenderContact(r *lipgloss.Renderer, width int) string {
 	title := TitleStyle(r).Render("◈ Contact")
 	sep := SeparatorStyle(r).Render(Separator(min(width-4, 60)))
 
@@ -30,6 +30,5 @@ func RenderContact(r *lipgloss.Renderer, width, height int) string {
 		help,
 	)
 
-	box := r.NewStyle().Padding(1, 3).Render(page)
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, box)
+	return r.NewStyle().Padding(1, 3).Render(page)
 }
