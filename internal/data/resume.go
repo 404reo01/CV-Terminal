@@ -39,8 +39,8 @@ type ContactItem struct {
 
 var Resume = ResumeData{
 	Name:  "Rayan EL OUAZZANI",
-	Title: "DevOps & Software Engineer",
-	About: "Software Engineer · Full Stack, Cloud & IA\nRansau Système",
+	Title: "Software Engineer · Full Stack, Cloud & IA",
+	About: "Ransau Système",
 
 	Experiences: []Experience{
 		{
