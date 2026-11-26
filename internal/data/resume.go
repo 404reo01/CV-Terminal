@@ -40,7 +40,7 @@ type ContactItem struct {
 var Resume = ResumeData{
 	Name:  "Rayan EL OUAZZANI",
 	Title: "DevOps & Software Engineer",
-	About: "Alternant Software Engineer chez Ransau Système (2026-2028),\nen MSc Développement Web, Mobile & Cloud à SUPINFO.\nJe construis et je déploie : apps full-stack, infra Kubernetes,\nintégration d'IA.",
+	About: "Software Engineer · Full Stack, Cloud & IA\nRansau Système",
 
 	Experiences: []Experience{
 		{
